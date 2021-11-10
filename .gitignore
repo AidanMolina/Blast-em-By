@@ -2,6 +2,8 @@
 #
 # Get latest from https://github.com/github/gitignore/blob/master/Unity.gitignore
 #
+/Blast em By/Library
+/Blast em By/Temp
 /[Ll]ibrary/
 /[Tt]emp/
 /[Oo]bj/

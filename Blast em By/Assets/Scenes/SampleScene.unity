@@ -758,7 +758,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletParent: {fileID: 903079008}
-  speed: 10
+  speed: 15
   ammo: 8
 --- !u!60 &1665298294
 PolygonCollider2D:

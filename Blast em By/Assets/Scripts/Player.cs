@@ -40,7 +40,7 @@ public class Player : MonoBehaviour
 
         if(Input.GetButtonDown("Fire2") && moving == false){
             moving = true;
-            target = Input.mousePosition;
+            target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             ammo = 8;
         }
 
@@ -50,6 +50,8 @@ public class Player : MonoBehaviour
 
         if(Vector3.Distance(transform.position, target) < 0.001f && moving == true){
             moving = false;
+            Vector3 temp = new Vector3(0f, 0f, 10f);
+            transform.position += temp;
         }
     }
 }

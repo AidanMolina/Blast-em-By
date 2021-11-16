@@ -29,20 +29,17 @@ public class Player : MonoBehaviour
             Instantiate(_laserPrefab, transform.position, Quaternion.identity);
         }
 
-        if(Input.GetButtonDown("Fire2")){
+        if(Input.GetButtonDown("Fire2") && moving == false){
             moving = true;
             target = Input.mousePosition;
-            Debug.Log("Moving is true");
         }
 
         if(moving == true){ 
             transform.position = Vector3.MoveTowards(transform.position, target, step);
-            Debug.Log("Moving");
         }
 
-        if(Vector3.Distance(transform.position, target) < 0.001f){
+        if(Vector3.Distance(transform.position, target) < 0.001f && moving == true){
             moving = false;
-            Debug.Log("Moving is False");
         }
     }
 }

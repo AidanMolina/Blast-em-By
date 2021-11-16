@@ -13,7 +13,7 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        InvokeRepeating("Shoot", 0, 2f);
+        InvokeRepeating("Shoot", 2f, 2f);
     }
 
     // Update is called once per frame

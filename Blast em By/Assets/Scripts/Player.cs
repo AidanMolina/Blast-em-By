@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] GameObject _laserPrefab;
+    [SerializeField] GameObject bulletParent;
     [SerializeField] float speed = 1f;
     
     bool moving;
@@ -29,10 +29,10 @@ public class Player : MonoBehaviour
         transform.rotation = Quaternion.AngleAxis(angle-90, Vector3.forward);
 
         if (Input.GetButtonDown("Fire1") && ammo > 0){
-            gameObject.transform.GetChild(ammo).gameObject.SetActive(true);
-            GameObject bullet = gameObject.transform.GetChild(ammo).gameObject;
+            bulletParent.transform.GetChild(ammo-1).gameObject.SetActive(true);
+            GameObject bullet = bulletParent.transform.GetChild(ammo-1).gameObject;
             Laser laserObject = bullet.GetComponent<Laser>();
-            laserObject.updateTarget(gameObject.transform.GetChild(9).transform.position);
+            laserObject.updateTarget(gameObject.transform.GetChild(1).transform.position);
             bullet.transform.position = gameObject.transform.position;
             
             ammo -= 1;

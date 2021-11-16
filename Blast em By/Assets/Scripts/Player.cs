@@ -54,5 +54,23 @@ public class Player : MonoBehaviour
             Vector3 temp = new Vector3(0f, 0f, 10f);
             transform.position += temp;
         }
+
+        if(health <= 0){
+            Destroy(gameObject);
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D collider){
+        if(collider.gameObject.CompareTag("EnemyBullet")){
+            health -= 1;
+            Destroy(collider);
+            Debug.Log("Bullet is in Player");
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D collider){
+        if(collider.gameObject.CompareTag("EnemyBullet")){
+            Debug.Log("Bullet is out of Player");
+        }
     }
 }

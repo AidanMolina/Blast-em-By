@@ -5,23 +5,33 @@ using UnityEngine;
 public class Laser : MonoBehaviour
 {
     [SerializeField] float speed = 1f;
-    [SerializeField] GameObject area;
-    Vector3 target;
+
+    Vector3 mainTarget;
+    float step;
 
     // Start is called before the first frame update
     void Start()
     {
-        target = area.transform.position;
+        gameObject.SetActive(false);
+        step =  speed * Time.deltaTime;
     }
 
     // Update is called once per frame
     void Update()
     {
-        float step =  speed * Time.deltaTime; 
-        transform.position = Vector3.MoveTowards(transform.position, target, step);
+        Move(mainTarget);
+    }
 
-        if(Vector3.Distance(transform.position, target) < 0.001f){
-            Destroy(gameObject);
+    void Move(Vector3 target){
+        if(gameObject.activeSelf){
+            transform.position = Vector3.MoveTowards(transform.position, target, step);
+            if(Vector3.Distance(transform.position, target) < 0.001f){
+                gameObject.SetActive(false);
+            }
         }
+    }
+
+    public void updateTarget(Vector3 target){
+        mainTarget = target;
     }
 }

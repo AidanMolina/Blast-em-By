@@ -18,7 +18,6 @@ public class Player : MonoBehaviour
     void Start()
     {
         moving = false;
-        step =  speed * Time.deltaTime;
         ammo = 8;
     }
 
@@ -46,6 +45,7 @@ public class Player : MonoBehaviour
         }
 
         if(moving == true){ 
+            step =  speed * Time.deltaTime;
             transform.position = Vector3.MoveTowards(transform.position, target, step);
         }
 
@@ -62,15 +62,8 @@ public class Player : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collider){
         if(collider.gameObject.CompareTag("EnemyBullet")){
+            collider.gameObject.SetActive(false);
             health -= 1;
-            Destroy(collider);
-            Debug.Log("Bullet is in Player");
-        }
-    }
-
-    void OnTriggerExit2D(Collider2D collider){
-        if(collider.gameObject.CompareTag("EnemyBullet")){
-            Debug.Log("Bullet is out of Player");
         }
     }
 }

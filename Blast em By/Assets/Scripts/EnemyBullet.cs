@@ -13,7 +13,6 @@ public class EnemyBullet : MonoBehaviour
     void Start()
     {
         gameObject.SetActive(false);
-        step =  speed * Time.deltaTime;
     }
 
     // Update is called once per frame
@@ -24,6 +23,7 @@ public class EnemyBullet : MonoBehaviour
 
     void Move(Vector3 target){
         if(gameObject.activeSelf){
+            step =  speed * Time.deltaTime;
             transform.position = Vector3.MoveTowards(transform.position, target, step);
             if(Vector3.Distance(transform.position, target) < 0.001f){
                 gameObject.SetActive(false);

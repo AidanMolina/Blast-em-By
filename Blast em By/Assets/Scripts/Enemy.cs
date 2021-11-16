@@ -34,9 +34,8 @@ public class Enemy : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collider){
         if(collider.gameObject.CompareTag("PlayerBullet")){
+            collider.gameObject.SetActive(false);
             health -= 1;
-            Destroy(collider);
-            Debug.Log(health);
         }
     }
 }

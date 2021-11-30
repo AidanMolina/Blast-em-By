@@ -15,6 +15,9 @@ public class Player : MonoBehaviour
     bool shieldOnCD;
     float shieldCD = 10.0f;
 
+    bool spreadOnCD;
+    float spreadCD = 3.0f;
+
     public int ammo;
     public int health;
 
@@ -25,6 +28,7 @@ public class Player : MonoBehaviour
         ammo = 8;
         shield = false;
         shieldOnCD = false;
+        spreadOnCD = false;
     }
 
     // Update is called once per frame
@@ -76,6 +80,40 @@ public class Player : MonoBehaviour
             if(shieldCD <= 0.0f){
                 shieldOnCD = false;
                 shieldCD = 10.0f;
+            }
+        }
+
+        //Spread Shot
+        if(Input.GetButtonDown("Fire3") && ammo >= 3 && spreadOnCD == false){
+            GameObject bullet1 = bulletParent.transform.GetChild(ammo-1).gameObject;
+            GameObject bullet2 = bulletParent.transform.GetChild(ammo-2).gameObject;
+            GameObject bullet3 = bulletParent.transform.GetChild(ammo-3).gameObject;
+
+            bullet1.SetActive(true);
+            bullet2.SetActive(true);
+            bullet3.SetActive(true);
+
+            Laser laserObject1 = bullet1.GetComponent<Laser>();
+            Laser laserObject2 = bullet2.GetComponent<Laser>();
+            Laser laserObject3 = bullet3.GetComponent<Laser>();
+
+            laserObject1.updateTarget(gameObject.transform.GetChild(1).transform.position);
+            laserObject2.updateTarget(gameObject.transform.GetChild(3).transform.position);
+            laserObject3.updateTarget(gameObject.transform.GetChild(4).transform.position);
+
+            bullet1.transform.position = gameObject.transform.position;
+            bullet2.transform.position = gameObject.transform.position;
+            bullet3.transform.position = gameObject.transform.position;
+
+            ammo -= 3;
+            spreadOnCD = true;
+        }
+
+        if(spreadOnCD == true){
+            spreadCD -= Time.deltaTime;
+            if(spreadCD <= 0.0f){
+                spreadOnCD = false;
+                spreadCD = 3.0f;
             }
         }
 

@@ -10,6 +10,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] float speed = 1f;
 
     public int health;
+    public int maxHealth;
     
     [SerializeField] GameObject point1;
     [SerializeField] GameObject point2;
@@ -37,11 +38,11 @@ public class Enemy : MonoBehaviour
             Destroy(gameObject);
         }
 
-        if(health > health/2){
+        if(health > maxHealth/2){
             Move(above50[pointer].transform.position);
         }
 
-        if(health <= health/2){
+        if(health <= maxHealth/2){
             Move(below50[pointer].transform.position);
         }
 

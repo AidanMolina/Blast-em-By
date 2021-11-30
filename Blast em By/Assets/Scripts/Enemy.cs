@@ -21,6 +21,9 @@ public class Enemy : MonoBehaviour
 
     private int pointer;
 
+    bool hitByLaser;
+    float laserTimer = 1.0f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,6 +32,7 @@ public class Enemy : MonoBehaviour
         above50 = new GameObject[]{point1, point2, point3, point4};
         below50 = new GameObject[]{point4, point3, point2, point1};
         pointer = 0;
+        hitByLaser = false;
     }
 
     // Update is called once per frame
@@ -46,6 +50,14 @@ public class Enemy : MonoBehaviour
             Move(below50[pointer].transform.position);
         }
 
+        if(hitByLaser == true){
+            laserTimer -= Time.deltaTime;
+            if(laserTimer <= 0.0f){
+                laserTimer = 1.0f;
+                hitByLaser = false;
+            }
+        }
+
     }
 
     void Shoot(){
@@ -60,6 +72,13 @@ public class Enemy : MonoBehaviour
         if(collider.gameObject.CompareTag("PlayerBullet")){
             collider.gameObject.SetActive(false);
             health -= 1;
+        }
+    }
+
+    void OnTriggerStay2D(Collider2D collider){
+        if(collider.gameObject.CompareTag("PlayerLaser") && hitByLaser == false){
+            health -= 5;
+            hitByLaser = true;
         }
     }
 

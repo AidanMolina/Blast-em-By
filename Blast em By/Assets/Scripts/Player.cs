@@ -18,6 +18,11 @@ public class Player : MonoBehaviour
     bool spreadOnCD;
     float spreadCD = 3.0f;
 
+    bool laserActive;
+    bool laserOnCD;
+    float laserCD = 20.0f;
+    float laserActiveTime = 3.0f;
+
     public int ammo;
     public int health;
 
@@ -26,9 +31,14 @@ public class Player : MonoBehaviour
     {
         moving = false;
         ammo = 8;
+
         shield = false;
         shieldOnCD = false;
+
         spreadOnCD = false;
+
+        laserActive = false;
+        laserOnCD = false;
     }
 
     // Update is called once per frame
@@ -114,6 +124,29 @@ public class Player : MonoBehaviour
             if(spreadCD <= 0.0f){
                 spreadOnCD = false;
                 spreadCD = 3.0f;
+            }
+        }
+
+        //Laser
+        if(Input.GetKeyDown(KeyCode.X) && laserActive == false && laserOnCD == false && ammo == 8){
+            gameObject.transform.GetChild(5).gameObject.SetActive(true);
+            laserActive = true;
+            ammo = 0;
+            laserOnCD = true;
+        }
+
+        if(laserOnCD == true){
+            laserCD -= Time.deltaTime;
+            laserActiveTime -= Time.deltaTime;
+
+            if(laserActiveTime <= 0.0f){
+                gameObject.transform.GetChild(5).gameObject.SetActive(false);
+                laserActive = false;
+            }
+            if(laserCD <= 0.0f){
+                laserOnCD = false;
+                laserCD = 20.0f;
+                laserActiveTime = 3.0f;
             }
         }
 

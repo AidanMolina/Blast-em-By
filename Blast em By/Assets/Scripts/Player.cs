@@ -10,6 +10,9 @@ public class Player : MonoBehaviour
     bool moving;
     Vector3 target;
     float step;
+    
+    bool justHit;
+    float invincibilityTimer = 5.0f;
 
     bool shield;
     bool shieldOnCD;
@@ -30,7 +33,8 @@ public class Player : MonoBehaviour
     void Start()
     {
         moving = false;
-        ammo = 8;
+        ammo = 8;       
+        justHit = false;
 
         shield = false;
         shieldOnCD = false;
@@ -150,6 +154,22 @@ public class Player : MonoBehaviour
             }
         }
 
+        //Invincibility Frames
+        if(justHit == true){
+            invincibilityTimer -= Time.deltaTime;
+
+            GameObject sprite = gameObject.transform.GetChild(0).gameObject;
+            Color temp = sprite.GetComponent<SpriteRenderer>().color;
+            temp.a = 0.4f;
+            sprite.GetComponent<SpriteRenderer>().color = temp;
+
+            if(invincibilityTimer <= 0.0f){
+                justHit = false;
+                temp.a = 1f;
+                sprite.GetComponent<SpriteRenderer>().color = temp;
+            }
+        }
+
         //Death
         if(health <= 0){
             Destroy(gameObject);
@@ -164,8 +184,9 @@ public class Player : MonoBehaviour
                 shieldOnCD = true;
                 gameObject.transform.GetChild(2).gameObject.SetActive(false);
             }
-            else{
+            else if(justHit == false){
                 health -= 1;
+                justHit = true;
             }
         }
     }

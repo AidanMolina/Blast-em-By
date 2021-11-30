@@ -11,6 +11,10 @@ public class Player : MonoBehaviour
     Vector3 target;
     float step;
 
+    bool shield;
+    bool shieldOnCD;
+    float shieldCD = 10.0f;
+
     public int ammo;
     public int health;
 
@@ -19,15 +23,19 @@ public class Player : MonoBehaviour
     {
         moving = false;
         ammo = 8;
+        shield = false;
+        shieldOnCD = false;
     }
 
     // Update is called once per frame
     void Update()
     {
+        //Looking at cursor
         var direction = Input.mousePosition - Camera.main.WorldToScreenPoint(transform.position);
         var angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.AngleAxis(angle-90, Vector3.forward);
 
+        //Firing bullets
         if (Input.GetButtonDown("Fire1") && ammo > 0){
             bulletParent.transform.GetChild(ammo-1).gameObject.SetActive(true);
             GameObject bullet = bulletParent.transform.GetChild(ammo-1).gameObject;
@@ -38,6 +46,7 @@ public class Player : MonoBehaviour
             ammo -= 1;
         }
 
+        //Movement
         if(Input.GetButtonDown("Fire2") && moving == false){
             moving = true;
             target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -55,6 +64,21 @@ public class Player : MonoBehaviour
             transform.position += temp;
         }
 
+        //Shield
+        if(Input.GetButtonDown("Jump") && shield == false && shieldOnCD == false && ammo >= 4){
+            gameObject.transform.GetChild(2).gameObject.SetActive(true);
+            shield = true;
+            ammo -= 4;
+        }
+
+        if(shieldOnCD == true){
+            shieldCD -= Time.deltaTime;
+            if(shieldCD <= 0.0f){
+                shieldOnCD = false;
+            }
+        }
+
+        //Death
         if(health <= 0){
             Destroy(gameObject);
         }
@@ -63,7 +87,14 @@ public class Player : MonoBehaviour
     void OnTriggerEnter2D(Collider2D collider){
         if(collider.gameObject.CompareTag("EnemyBullet")){
             collider.gameObject.SetActive(false);
-            health -= 1;
+            if(shield == true){
+                shield = false;
+                shieldOnCD = true;
+                gameObject.transform.GetChild(2).gameObject.SetActive(false);
+            }
+            else{
+                health -= 1;
+            }
         }
     }
 }

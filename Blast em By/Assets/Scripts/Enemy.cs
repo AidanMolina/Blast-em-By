@@ -37,11 +37,11 @@ public class Enemy : MonoBehaviour
             Destroy(gameObject);
         }
 
-        if(health > 5){
+        if(health > health/2){
             Move(above50[pointer].transform.position);
         }
 
-        if(health <= 5){
+        if(health <= health/2){
             Move(below50[pointer].transform.position);
         }
 

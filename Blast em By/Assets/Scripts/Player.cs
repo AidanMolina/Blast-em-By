@@ -75,6 +75,7 @@ public class Player : MonoBehaviour
             shieldCD -= Time.deltaTime;
             if(shieldCD <= 0.0f){
                 shieldOnCD = false;
+                shieldCD = 10.0f;
             }
         }
 

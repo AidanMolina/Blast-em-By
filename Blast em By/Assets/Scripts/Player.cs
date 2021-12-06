@@ -210,9 +210,9 @@ public class Player : MonoBehaviour
     }
 
     void TakeBullets(){
-        for(int i = 3; i < 11; i++){
-            if(i - 4 < ammo){
-                canvas.transform.GetChild(i).gameObject.SetActive(false);
+        for(int i = 0; i < 8; i ++){
+            if(i > ammo - 1){
+                canvas.transform.GetChild(i+3).gameObject.SetActive(false);
             }
         }
     }

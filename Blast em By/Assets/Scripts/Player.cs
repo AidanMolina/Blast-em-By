@@ -13,7 +13,7 @@ public class Player : MonoBehaviour
     float step;
     
     bool justHit;
-    float invincibilityTimer = 5.0f;
+    float invincibilityTimer = 1.0f;
 
     bool shield;
     bool shieldOnCD;
@@ -176,6 +176,7 @@ public class Player : MonoBehaviour
             if(invincibilityTimer <= 0.0f){
                 justHit = false;
                 temp.a = 1f;
+                invincibilityTimer = 1.0f;
                 sprite.GetComponent<SpriteRenderer>().color = temp;
             }
         }
@@ -183,6 +184,7 @@ public class Player : MonoBehaviour
         //Death
         if(health <= 0){
             Destroy(gameObject);
+            canvas.transform.GetChild(17).gameObject.SetActive(true);
         }
     }
 

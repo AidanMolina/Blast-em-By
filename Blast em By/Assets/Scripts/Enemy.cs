@@ -64,11 +64,13 @@ public class Enemy : MonoBehaviour
     }
 
     void Shoot(){
+        if(player != null){
             enemyBulletParent.transform.GetChild(0).gameObject.SetActive(true);
             GameObject bullet = enemyBulletParent.transform.GetChild(0).gameObject;
             EnemyBullet bulletObject = bullet.GetComponent<EnemyBullet>();
             bulletObject.updateTarget(player.transform.position);
             bullet.transform.position = gameObject.transform.position;
+        }
     }
 
     void OnTriggerEnter2D(Collider2D collider){

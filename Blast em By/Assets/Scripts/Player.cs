@@ -126,6 +126,7 @@ public class Player : MonoBehaviour
             ammo -= 3;
             spreadOnCD = true;
             CheckSpread();
+            TakeBullets();
         }
 
         if(spreadOnCD == true){
@@ -144,6 +145,7 @@ public class Player : MonoBehaviour
             ammo = 0;
             laserOnCD = true;
             CheckLaser();
+            TakeBullets();
         }
 
         if(laserOnCD == true){

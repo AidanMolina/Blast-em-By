@@ -6,6 +6,7 @@ public class Player : MonoBehaviour
 {
     [SerializeField] GameObject bulletParent;
     [SerializeField] float speed = 1f;
+    [SerializeField] GameObject canvas;
     
     bool moving;
     Vector3 target;
@@ -62,6 +63,7 @@ public class Player : MonoBehaviour
             bullet.transform.position = gameObject.transform.position;
             
             ammo -= 1;
+            TakeBullets();
         }
 
         //Movement
@@ -69,6 +71,7 @@ public class Player : MonoBehaviour
             moving = true;
             target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             ammo = 8;
+            AddBullets();
         }
 
         if(moving == true){ 
@@ -94,6 +97,7 @@ public class Player : MonoBehaviour
             if(shieldCD <= 0.0f){
                 shieldOnCD = false;
                 shieldCD = 10.0f;
+                CheckShield();
             }
         }
 
@@ -121,6 +125,7 @@ public class Player : MonoBehaviour
 
             ammo -= 3;
             spreadOnCD = true;
+            CheckSpread();
         }
 
         if(spreadOnCD == true){
@@ -128,6 +133,7 @@ public class Player : MonoBehaviour
             if(spreadCD <= 0.0f){
                 spreadOnCD = false;
                 spreadCD = 3.0f;
+                CheckSpread();
             }
         }
 
@@ -137,6 +143,7 @@ public class Player : MonoBehaviour
             laserActive = true;
             ammo = 0;
             laserOnCD = true;
+            CheckLaser();
         }
 
         if(laserOnCD == true){
@@ -151,6 +158,7 @@ public class Player : MonoBehaviour
                 laserOnCD = false;
                 laserCD = 20.0f;
                 laserActiveTime = 3.0f;
+                CheckLaser();
             }
         }
 
@@ -182,12 +190,67 @@ public class Player : MonoBehaviour
             if(shield == true){
                 shield = false;
                 shieldOnCD = true;
+                CheckShield();
                 gameObject.transform.GetChild(2).gameObject.SetActive(false);
             }
             else if(justHit == false){
                 health -= 1;
                 justHit = true;
+                CheckHealth();
             }
+        }
+    }
+
+    void CheckHealth(){
+        for(int i = 0; i < 3; i ++){
+            if(i > health - 1){
+                canvas.transform.GetChild(i).gameObject.SetActive(false);
+            }
+        }
+    }
+
+    void TakeBullets(){
+        for(int i = 3; i < 11; i++){
+            if(i - 4 < ammo){
+                canvas.transform.GetChild(i).gameObject.SetActive(false);
+            }
+        }
+    }
+
+    void AddBullets(){
+        for(int i = 3; i < 11; i++){
+            canvas.transform.GetChild(i).gameObject.SetActive(true);
+        }
+    }
+
+    void CheckShield(){
+        if(shieldOnCD == true){
+            canvas.transform.GetChild(11).gameObject.SetActive(false);
+        }
+        else{
+            canvas.transform.GetChild(11).gameObject.SetActive(true);
+        }
+    }
+
+    void CheckSpread(){
+        if(spreadOnCD == true){
+            canvas.transform.GetChild(12).gameObject.SetActive(false);
+            canvas.transform.GetChild(13).gameObject.SetActive(false);
+            canvas.transform.GetChild(14).gameObject.SetActive(false);
+        }
+        else{
+            canvas.transform.GetChild(12).gameObject.SetActive(true);
+            canvas.transform.GetChild(13).gameObject.SetActive(true);
+            canvas.transform.GetChild(14).gameObject.SetActive(true);
+        }
+    }
+
+    void CheckLaser(){
+        if(laserOnCD == true){
+            canvas.transform.GetChild(15).gameObject.SetActive(false);
+        }
+        else{
+            canvas.transform.GetChild(15).gameObject.SetActive(true);
         }
     }
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Threading;
+using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
@@ -9,8 +10,8 @@ public class Enemy : MonoBehaviour
     [SerializeField] GameObject enemyBulletParent;
     [SerializeField] float speed = 1f;
 
-    public int health;
-    public int maxHealth;
+    public float health;
+    public float maxHealth;
     
     [SerializeField] GameObject point1;
     [SerializeField] GameObject point2;
@@ -23,6 +24,8 @@ public class Enemy : MonoBehaviour
 
     bool hitByLaser;
     float laserTimer = 1.0f;
+
+    public Slider slider;
 
     // Start is called before the first frame update
     void Start()
@@ -72,6 +75,7 @@ public class Enemy : MonoBehaviour
         if(collider.gameObject.CompareTag("PlayerBullet")){
             collider.gameObject.SetActive(false);
             health -= 1;
+            slider.value = health/maxHealth;
         }
     }
 

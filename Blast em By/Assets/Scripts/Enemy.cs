@@ -48,7 +48,7 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //InvokeRepeating("Shoot", 2f, 2f);
+        InvokeRepeating("Shoot", 2f, 2f);
 
         above75 = new GameObject[]{point1, point2, point3, point4};
         above50 = new GameObject[]{point1, point3, point4, point2};

@@ -114,11 +114,11 @@ public class Enemy : MonoBehaviour
             }
 
             if(above50HP){
-                //Target();
+                Target();
             }
 
             if(above25HP){
-                //Target();
+                Target();
                 Bomb();
             }
 

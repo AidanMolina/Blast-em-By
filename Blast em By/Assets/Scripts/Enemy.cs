@@ -37,8 +37,6 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        transform.LookAt(new Vector3(player.transform.position.x, player.transform.position.y, 0f));
-
         InvokeRepeating("Shoot", 2f, 2f);
 
         above75 = new GameObject[]{point1, point2, point3, point4};
@@ -58,59 +56,64 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(health <= 0){
-            Destroy(gameObject);
-        }
+        if(player != null){
+            var direction = new Vector2(player.transform.position.x, player.transform.position.y) - new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
+            var angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.AngleAxis(angle-90, Vector3.forward);
+        
 
-        if(health >= 75){
-            Move(above75[pointer].transform.position);
-
-        }
-        else if(health >= 50){
-            Move(above50[pointer].transform.position);
-            if(above75HP){
-                above50HP = true;
-                above75HP = false;
+            if(health <= 0){
+                Destroy(gameObject);
             }
-        }
-        else if(health >= 25){
-            Move(above25[pointer].transform.position);
+
+            if(health >= 75){
+                Move(above75[pointer].transform.position);
+            }
+            else if(health >= 50){
+                Move(above50[pointer].transform.position);
+                if(above75HP){
+                    above50HP = true;
+                    above75HP = false;
+                }
+            }
+            else if(health >= 25){
+                Move(above25[pointer].transform.position);
+                if(above50HP){
+                    above25HP = true;
+                    above50HP = false;
+                }
+            }
+            else{
+                Move(below25[pointer].transform.position);
+                if(above25HP){
+                    below25HP = true;
+                    above25HP = false;
+                }
+            }
+
+            if(hitByLaser == true){
+                laserTimer -= Time.deltaTime;
+                if(laserTimer <= 0.0f){
+                    laserTimer = 1.0f;
+                    hitByLaser = false;
+                }
+            }
+
             if(above50HP){
-                above25HP = true;
-                above50HP = false;
+                Target();
             }
-        }
-        else{
-            Move(below25[pointer].transform.position);
+
             if(above25HP){
-                below25HP = true;
-                above25HP = false;
+                Target();
+                Bomb();
+            }
+
+            if(below25HP){
+                Target();
+                Bomb();
+                Spray();
             }
         }
-
-        if(hitByLaser == true){
-            laserTimer -= Time.deltaTime;
-            if(laserTimer <= 0.0f){
-                laserTimer = 1.0f;
-                hitByLaser = false;
-            }
-        }
-
-        if(above50HP){
-            Target();
-        }
-
-        if(above25HP){
-            Target();
-            Bomb();
-        }
-
-        if(below25HP){
-            Target();
-            Bomb();
-            Spray();
-        }
-
     }
 
     void Shoot(){

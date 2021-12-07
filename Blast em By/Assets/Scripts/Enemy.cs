@@ -18,7 +18,14 @@ public class Enemy : MonoBehaviour
     [SerializeField] GameObject point3;
     [SerializeField] GameObject point4;
     private GameObject[] above50;
-    private GameObject[] below50;
+    private GameObject[] below25;
+    private GameObject[] above25;
+    private GameObject[] above75;
+
+    private bool above75HP;
+    private bool above50HP;
+    private bool above25HP;
+    private bool below25HP;
 
     private int pointer;
 
@@ -30,12 +37,22 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        transform.LookAt(new Vector3(player.transform.position.x, player.transform.position.y, 0f));
+
         InvokeRepeating("Shoot", 2f, 2f);
 
-        above50 = new GameObject[]{point1, point2, point3, point4};
-        below50 = new GameObject[]{point4, point3, point2, point1};
+        above75 = new GameObject[]{point1, point2, point3, point4};
+        above50 = new GameObject[]{point1, point3, point4, point2};
+        above25 = new GameObject[]{point4, point3, point2, point1};
+        below25 = new GameObject[]{point4, point1, point3, point2};
+        
         pointer = 0;
         hitByLaser = false;
+
+        above75HP = true;
+        above50HP = false;
+        above25HP = false;
+        below25HP = false;
     }
 
     // Update is called once per frame
@@ -45,12 +62,30 @@ public class Enemy : MonoBehaviour
             Destroy(gameObject);
         }
 
-        if(health > maxHealth/2){
-            Move(above50[pointer].transform.position);
-        }
+        if(health >= 75){
+            Move(above75[pointer].transform.position);
 
-        if(health <= maxHealth/2){
-            Move(below50[pointer].transform.position);
+        }
+        else if(health >= 50){
+            Move(above50[pointer].transform.position);
+            if(above75HP){
+                above50HP = true;
+                above75HP = false;
+            }
+        }
+        else if(health >= 25){
+            Move(above25[pointer].transform.position);
+            if(above50HP){
+                above25HP = true;
+                above50HP = false;
+            }
+        }
+        else{
+            Move(below25[pointer].transform.position);
+            if(above25HP){
+                below25HP = true;
+                above25HP = false;
+            }
         }
 
         if(hitByLaser == true){
@@ -59,6 +94,21 @@ public class Enemy : MonoBehaviour
                 laserTimer = 1.0f;
                 hitByLaser = false;
             }
+        }
+
+        if(above50HP){
+            Target();
+        }
+
+        if(above25HP){
+            Target();
+            Bomb();
+        }
+
+        if(below25HP){
+            Target();
+            Bomb();
+            Spray();
         }
 
     }
@@ -101,5 +151,17 @@ public class Enemy : MonoBehaviour
                 }
             }
         }
+    }
+
+    void Target(){
+
+    }
+
+    void Bomb(){
+
+    }
+
+    void Spray(){
+
     }
 }

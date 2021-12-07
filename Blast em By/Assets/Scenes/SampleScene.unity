@@ -2668,8 +2668,8 @@ MonoBehaviour:
   player: {fileID: 1665298292}
   enemyBulletParent: {fileID: 1287391415}
   speed: 5
-  health: 40
-  maxHealth: 40
+  health: 100
+  maxHealth: 100
   point1: {fileID: 33124279}
   point2: {fileID: 1649248728}
   point3: {fileID: 1301055108}

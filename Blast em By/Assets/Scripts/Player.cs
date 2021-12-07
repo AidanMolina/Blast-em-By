@@ -90,6 +90,7 @@ public class Player : MonoBehaviour
             gameObject.transform.GetChild(2).gameObject.SetActive(true);
             shield = true;
             ammo -= 4;
+            TakeBullets();
         }
 
         if(shieldOnCD == true){

@@ -32,6 +32,17 @@ public class Enemy : MonoBehaviour
     bool hitByLaser;
     float laserTimer = 1.0f;
 
+    bool spray;
+    float sprayCD = 3.0f;
+
+    bool bomb;
+    float bombCD = 5.0f;
+
+    bool targeting;
+    float targetCD = 2.5f;
+    float targetTimer = 1.5f;
+    float explosionTimer = 1.0f;
+
     public Slider slider;
 
     // Start is called before the first frame update
@@ -46,6 +57,9 @@ public class Enemy : MonoBehaviour
         
         pointer = 0;
         hitByLaser = false;
+        spray = false;
+        bomb = false;
+        targeting = false;
 
         above75HP = true;
         above50HP = false;
@@ -157,14 +171,67 @@ public class Enemy : MonoBehaviour
     }
 
     void Target(){
-
+        if(player != null){
+            GameObject targeter = enemyBulletParent.transform.GetChild(4).gameObject;
+            if(targeting == false){
+                targeter.SetActive(true);
+                targeter.transform.position = new Vector2(player.transform.position.x, player.transform.position.y);
+                targeting = true;
+            }
+            else{
+                targetTimer -= Time.deltaTime;
+                if(targetTimer <= 0.0f){
+                    targeter.transform.GetChild(0).gameObject.SetActive(true);
+                }
+                if(targeter.transform.GetChild(0).gameObject.activeSelf){
+                    explosionTimer -= Time.deltaTime;
+                    if(explosionTimer <= 0.0f){
+                        targeter.transform.GetChild(0).gameObject.SetActive(false);
+                        targeter.SetActive(false);
+                        targetTimer = 1.5f;
+                        explosionTimer = 1.0f;
+                        targeting = false;
+                    }
+                }
+            }
+        }
     }
-
     void Bomb(){
 
     }
 
     void Spray(){
+        if(player != null){
+            if(spray == false){
+                GameObject bullet1 = enemyBulletParent.transform.GetChild(1).gameObject;
+                GameObject bullet2 = enemyBulletParent.transform.GetChild(2).gameObject;
+                GameObject bullet3 = enemyBulletParent.transform.GetChild(3).gameObject;
 
+                bullet1.SetActive(true);
+                bullet2.SetActive(true);
+                bullet3.SetActive(true);
+
+                EnemyBullet bulletObject1 = bullet1.GetComponent<EnemyBullet>();
+                EnemyBullet bulletObject2 = bullet2.GetComponent<EnemyBullet>();
+                EnemyBullet bulletObject3 = bullet3.GetComponent<EnemyBullet>();
+
+                bulletObject1.updateTarget(gameObject.transform.GetChild(0).transform.position);
+                bulletObject2.updateTarget(gameObject.transform.GetChild(1).transform.position);
+                bulletObject3.updateTarget(gameObject.transform.GetChild(2).transform.position);
+
+                bullet1.transform.position = gameObject.transform.position;
+                bullet2.transform.position = gameObject.transform.position;
+                bullet3.transform.position = gameObject.transform.position;
+                
+                spray = true;
+            }
+            else{
+                sprayCD -= Time.deltaTime;
+                if(sprayCD <= 0.0f){
+                    spray = false;
+                    sprayCD = 3.0f;
+                }
+            }
+        }
     }
 }

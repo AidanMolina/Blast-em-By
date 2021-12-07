@@ -37,9 +37,9 @@ public class Enemy : MonoBehaviour
 
     bool bomb;
     float bombCD = 5.0f;
+    float bombExplosionTimer = 1.0f;
 
     bool targeting;
-    float targetCD = 2.5f;
     float targetTimer = 1.5f;
     float explosionTimer = 1.0f;
 
@@ -48,7 +48,7 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        InvokeRepeating("Shoot", 2f, 2f);
+        //InvokeRepeating("Shoot", 2f, 2f);
 
         above75 = new GameObject[]{point1, point2, point3, point4};
         above50 = new GameObject[]{point1, point3, point4, point2};
@@ -114,11 +114,11 @@ public class Enemy : MonoBehaviour
             }
 
             if(above50HP){
-                Target();
+                //Target();
             }
 
             if(above25HP){
-                Target();
+                //Target();
                 Bomb();
             }
 
@@ -197,7 +197,32 @@ public class Enemy : MonoBehaviour
         }
     }
     void Bomb(){
+        if(player != null){
+            GameObject bomber = enemyBulletParent.transform.GetChild(5).gameObject;
+            if(bomb == false){
+                bomber.SetActive(true);
+                EnemyBomb bombObject = bomber.GetComponent<EnemyBomb>();
+                bombObject.updateTarget(new Vector3(Random.Range(-7f, 7f), Random.Range(-3f, 3f), 0f));
+                bomber.transform.position = gameObject.transform.position;
 
+                bomb = true;
+            }
+            else{
+                bombCD -= Time.deltaTime;
+                if(bomber.transform.GetChild(0).gameObject.activeSelf){
+                    bombExplosionTimer -= Time.deltaTime;
+                    if(bombExplosionTimer <= 0.0f){
+                        bomber.transform.GetChild(0).gameObject.SetActive(false);
+                        bomber.SetActive(false);
+                        bombExplosionTimer = 1.0f;
+                    }
+                }
+                if(bombCD <= 0.0f){
+                    bombCD = 3.0f;
+                    bomb = false;
+                }
+            }
+        }
     }
 
     void Spray(){

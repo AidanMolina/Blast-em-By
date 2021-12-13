@@ -9,6 +9,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] GameObject player;
     [SerializeField] GameObject enemyBulletParent;
     [SerializeField] float speed = 1f;
+    [SerializeField] GameObject canvas;
 
     public float health;
     public float maxHealth;
@@ -78,6 +79,7 @@ public class Enemy : MonoBehaviour
 
             if(health <= 0){
                 Destroy(gameObject);
+                canvas.transform.GetChild(18).gameObject.SetActive(true);
             }
 
             if(health >= 75){

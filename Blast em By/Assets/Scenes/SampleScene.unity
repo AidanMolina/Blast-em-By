@@ -3405,7 +3405,7 @@ MonoBehaviour:
   enemyBulletParent: {fileID: 1287391415}
   speed: 5
   canvas: {fileID: 1597394095}
-  health: 10
+  health: 100
   maxHealth: 100
   point1: {fileID: 33124279}
   point2: {fileID: 1649248728}
